@@ -1,0 +1,48 @@
+<!--Filters for payment transactions-->
+<div
+  fxLayout.gt-md
+  fxLayoutAlign="end"
+>
+  <vyne-payment-transaction-filters
+    (filterChange)="onTableFilterChange($event)"
+  ></vyne-payment-transaction-filters>
+</div>
+
+<!--Table of payments only shows on 1280px width or higher-->
+<vyne-table
+  fxHide.lt-md
+  [dataSource]="tableData$ | async"
+  [columns]="tableColumns"
+  [paginationConfig]="paginationConfig$ | async"
+  (tablePageChange)="onTablePageChange($event)"
+></vyne-table>
+
+<!--Cards of payments on shows on 960px widths or lower-->
+<div fxHide.gt-sm fxLayout="column" fxLayoutGap="10px" *ngIf="({'data': cardData$ | async}) as cardData">
+  <vyne-card *ngFor="let row of cardData.data">
+    <div fxLayout="column" fxLayoutGap="15px">
+      <div *ngFor="let column of tableColumns" fxLayoutAlign="space-between">
+        <span class="text_secondary">{{column.label}}</span>
+        <span fxFlex="60">{{getColumnKeyValue(row, column)}}</span>
+      </div>
+    </div>
+  </vyne-card>
+
+  <ng-container *ngIf="!hasCardData(cardData.data)">
+    <vyne-card>
+      <span>
+        No data matching selected filters. Please amend filters.
+      </span>
+    </vyne-card>
+  </ng-container>
+
+  <vyne-card *ngIf="paginationConfig$ | async as paginationConfig">
+    <span>
+      <mat-paginator
+        [length]="paginationConfig.totalNumberOfItems"
+        [pageSize]="paginationConfig.pageSize"
+        (page)="onTablePageChange($event)"
+      ></mat-paginator>
+    </span>
+  </vyne-card>
+</div>

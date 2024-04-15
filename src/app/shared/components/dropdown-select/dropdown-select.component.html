@@ -1,0 +1,13 @@
+<mat-form-field>
+  <mat-label>{{label}}</mat-label>
+  <ng-container *ngIf="multiSelect; else singleSelect">
+    <mat-select multiple (selectionChange)="onSelectionChange($event)">
+      <mat-option *ngFor="let option of optionsList" [value]="option.value">{{option.label}}</mat-option>
+    </mat-select>
+  </ng-container>
+  <ng-template #singleSelect>
+    <mat-select>
+      <mat-option *ngFor="let option of optionsList" [value]="option.value">{{option.label}}</mat-option>
+    </mat-select>
+  </ng-template>
+</mat-form-field>

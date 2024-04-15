@@ -1,1 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import "styles/constants";
+
+/*Global Container Style*/
+body {
+  background-color: $base-color;
+  color: $text-color;
+  font-family: $default-font;
+}
+
+.text {
+  &_bold {
+    font-weight: bold;
+  }
+
+  &_secondary {
+    color: $secondary-text-light;
+  }
+}
+
+
+

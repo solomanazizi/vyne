@@ -1,0 +1,12 @@
+<form [formGroup]="filterForm" fxLayoutGap="10px">
+  <vyne-dropdown-select
+    label="Status Filter"
+    formControlName="status"
+    [optionsList]="transactionStatusOptions$ | async"
+    [multiSelect]="true"
+  ></vyne-dropdown-select>
+
+  <vyne-datepicker
+    formControlName="dateRange">
+  </vyne-datepicker>
+</form>

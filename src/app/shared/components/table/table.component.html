@@ -1,0 +1,30 @@
+<table mat-table [dataSource]="dataSource">
+  <ng-container *ngFor="let column of columns" [matColumnDef]="column.key">
+    <th mat-header-cell *matHeaderCellDef class="text_bold">{{column.label}}</th>
+    <ng-container *ngIf="column.type === 'data'; else formatValue">
+      <td
+        mat-cell
+        *matCellDef="let row"
+        [ngClass]="column.styleClasses ?? []"
+      >{{row[column.key]}}</td>
+    </ng-container>
+    <ng-template #formatValue>
+      <td mat-cell *matCellDef="let row">{{getFormattedValue(row[column.key], column.type)}}</td>
+    </ng-template>
+  </ng-container>
+
+  <tr class="mat-row" *matNoDataRow>
+    <td class="mat-cell" colspan="4">No data matching selected filters. Please amend filters.</td>
+  </tr>
+
+  <tr mat-header-row *matHeaderRowDef="getColumnKeys()" class="striped-row"></tr>
+  <tr mat-row *matRowDef="let row; let odd = odd; columns: getColumnKeys();" [class.striped-row]="odd"></tr>
+</table>
+
+<ng-container *ngIf="!!paginationConfig">
+  <mat-paginator
+    [length]="paginationConfig.totalNumberOfItems"
+    [pageSize]="paginationConfig.pageSize"
+    (page)="onPageChange($event)"
+  ></mat-paginator>
+</ng-container>
