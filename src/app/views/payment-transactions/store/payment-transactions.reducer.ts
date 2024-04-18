@@ -33,31 +33,5 @@ export const reducer = createReducer(
   on(actions.getPaymentTransactionsError, (state: PaymentTransactionsState) => ({
     ...state,
     paymentTransactionsLoading: false
-  })),
-  on(actions.getPaymentTransactionsPage, (state: PaymentTransactionsState) => ({
-    ...state,
-    paymentTransactionsLoading: true
-  })),
-  on(actions.getPaymentTransactionsPageSuccess, (state: PaymentTransactionsState, response) => ({
-    ...state,
-    paymentTransactions: response,
-    paymentTransactionsLoading: false
-  })),
-  on(actions.getPaymentTransactionsPageError, (state: PaymentTransactionsState) => ({
-    ...state,
-    paymentTransactionsLoading: false
-  })),
-  on(actions.getPaymentTransactionsFilteredPage, (state: PaymentTransactionsState) => ({
-    ...state,
-    paymentTransactionsLoading: true
-  })),
-  on(actions.getPaymentTransactionsFilteredPageSuccess, (state: PaymentTransactionsState, response) => ({
-    ...state,
-    paymentTransactions: response,
-    paymentTransactionsLoading: false
-  })),
-  on(actions.getPaymentTransactionsFilteredPageError, (state: PaymentTransactionsState) => ({
-    ...state,
-    paymentTransactionsLoading: false
   }))
 );

@@ -10,4 +10,5 @@ export interface TableColumn {
 export interface PaginationConfig {
   pageSize: number;
   totalNumberOfItems: number;
+  currentPage: number;
 }

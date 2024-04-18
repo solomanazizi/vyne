@@ -32,6 +32,7 @@ describe('PaymentTransactionFiltersComponent', () => {
 
     fixture = TestBed.createComponent(PaymentTransactionFiltersComponent);
     component = fixture.componentInstance;
+    component.statusOptions = []; //Required input value
     fixture.detectChanges();
   });
 

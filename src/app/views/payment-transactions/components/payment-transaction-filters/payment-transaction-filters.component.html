@@ -2,8 +2,7 @@
   <vyne-dropdown-select
     label="Status Filter"
     formControlName="status"
-    [optionsList]="transactionStatusOptions$ | async"
-    [multiSelect]="true"
+    [optionsList]="statusOptions"
   ></vyne-dropdown-select>
 
   <vyne-datepicker

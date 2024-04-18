@@ -6,7 +6,7 @@
     </mat-select>
   </ng-container>
   <ng-template #singleSelect>
-    <mat-select>
+    <mat-select (selectionChange)="onSelectionChange($event)">
       <mat-option *ngFor="let option of optionsList" [value]="option.value">{{option.label}}</mat-option>
     </mat-select>
   </ng-template>

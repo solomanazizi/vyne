@@ -10,9 +10,12 @@ import { PaymentTransactionResponse } from '../models/payment-transactions.model
 export class PaymentTransactionsEffects {
   getPaymentTransactions$ = createEffect(() => this.actions$.pipe(
     ofType(actions.getPaymentTransactions),
-    switchMap(() => this.paymentTransactionHttp.getPaymentTransactions().pipe(
+    switchMap((action) => this.paymentTransactionHttp.getPaymentTransactions(action.requestPayload).pipe(
       map((response: PaymentTransactionResponse) => actions.getPaymentTransactionsSuccess(response)),
-      catchError(err => of(actions.getPaymentTransactionsError({err})))
+      catchError(err => {
+        throw err;
+        return of(actions.getPaymentTransactionsError({err}));
+      })
     ))
   ));
 

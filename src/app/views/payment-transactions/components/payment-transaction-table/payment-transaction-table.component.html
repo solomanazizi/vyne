@@ -4,6 +4,7 @@
   fxLayoutAlign="end"
 >
   <vyne-payment-transaction-filters
+    [statusOptions]="options"
     (filterChange)="onTableFilterChange($event)"
   ></vyne-payment-transaction-filters>
 </div>

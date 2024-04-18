@@ -1,16 +1,17 @@
 import { ChangeDetectionStrategy, Component, } from '@angular/core';
 import {
-  PaymentTransaction, PaymentTransactionTableFilters,
+  PaymentTransaction,
+  PaymentTransactionTableFilters,
   TransactionStatus
 } from '../../models/payment-transactions.models';
 import { Observable } from 'rxjs';
 import { PaymentTransactionsTableService } from '../../services/payment-transactions-table.service';
 import { PaginationConfig, TableColumn } from '../../../../shared/models/table.models';
 import { MatTableDataSource } from '@angular/material/table';
-import { OptionItem } from '../../../../shared/models/dropdown-select.models';
 import { TABLE_COLUMN_CONFIG } from '../../constants/payment-transactions.constants';
 import { DateUtilsService } from '../../../../shared/services/date-utils/date-utils.service';
 import { PageEvent } from '@angular/material/paginator';
+import { OptionItem } from '../../../../shared/models/dropdown-select.models';
 
 @Component({
   selector: 'vyne-payment-transaction-table',
@@ -22,8 +23,11 @@ export class PaymentTransactionTableComponent {
   tableColumns: Array<TableColumn> = TABLE_COLUMN_CONFIG;
   tableData$: Observable<MatTableDataSource<PaymentTransaction>> = this.tableService.tableData$;
   cardData$: Observable<Array<PaymentTransaction>> = this.tableService.cardData$;
-  transactionStatusOptions$: Observable<Array<OptionItem<TransactionStatus>>> = this.tableService.transactionsStatusOptions$;
   paginationConfig$: Observable<PaginationConfig> = this.tableService.paginationConfig$;
+
+  //Todo find a cleaner way rather than a local var on component
+  //Todo calling method in template is breaking, find cause
+  options: Array<OptionItem<TransactionStatus>> = this.tableService.getTransactionStatusOptions();
 
   constructor(
     private tableService: PaymentTransactionsTableService,

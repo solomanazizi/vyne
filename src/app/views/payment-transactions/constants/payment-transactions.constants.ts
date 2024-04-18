@@ -38,3 +38,5 @@ export const TABLE_COLUMN_CONFIG: Array<TableColumn> = [
     type: 'date',
   },
 ];
+
+export const TRANSACTION_STATUS: Array<string> = ['CREATED', 'FAILED', 'SETTLED', 'COMPLETED', 'CAPTURED'];

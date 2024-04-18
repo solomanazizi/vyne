@@ -17,6 +17,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 describe('PaymentTransactionTableComponent', () => {
   let component: PaymentTransactionTableComponent;
   let fixture: ComponentFixture<PaymentTransactionTableComponent>;
+  let tableService: PaymentTransactionsTableService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -24,7 +25,9 @@ describe('PaymentTransactionTableComponent', () => {
       providers: [
         {
           provide: PaymentTransactionsTableService,
-          useValue: {}
+          useValue: {
+            getTransactionStatusOptions: () => []
+          }
         },
         {
           provide: DateUtilsService,
@@ -47,6 +50,7 @@ describe('PaymentTransactionTableComponent', () => {
 
     fixture = TestBed.createComponent(PaymentTransactionTableComponent);
     component = fixture.componentInstance;
+    tableService = TestBed.inject(PaymentTransactionsTableService);
     fixture.detectChanges();
   });
 

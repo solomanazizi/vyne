@@ -1,19 +1,16 @@
 /** Enums **/
 import { DateRange } from '../../../shared/models/datepicket.models';
+import { TRANSACTION_STATUS } from '../constants/payment-transactions.constants';
 
-export type TransactionStatus =
-  'CREATED' |
-  'FAILED' |
-  'SETTLED' |
-  'COMPLETED' |
-  'CAPTURED';
-
+export type TransactionStatus = typeof TRANSACTION_STATUS[number];
 
 /** Interfaces **/
 export interface PaymentTransactionRequest {
-  currentPage: number;
-  pageSize: number;
-  filters: any; //Needs to be changed to a more readable filter interface
+  createdAtEnd: string; //YYYY-MM-DD
+  createdAtStart: string //YYYY-MM-DD
+  page: number;
+  size: number;
+  status: TransactionStatus | '';
 }
 
 export interface PaymentTransactionResponse {
@@ -36,5 +33,5 @@ export interface PaymentTransaction {
 
 export interface PaymentTransactionTableFilters {
   dateRange: DateRange;
-  status: Array<TransactionStatus>;
+  status: TransactionStatus | '';
 }

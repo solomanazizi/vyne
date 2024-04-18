@@ -13,17 +13,18 @@
     </ng-template>
   </ng-container>
 
-  <tr class="mat-row" *matNoDataRow>
-    <td class="mat-cell" colspan="4">No data matching selected filters. Please amend filters.</td>
-  </tr>
-
   <tr mat-header-row *matHeaderRowDef="getColumnKeys()" class="striped-row"></tr>
   <tr mat-row *matRowDef="let row; let odd = odd; columns: getColumnKeys();" [class.striped-row]="odd"></tr>
 </table>
 
+<div *ngIf="!dataSource?.data?.length" class="error" fxLayoutAlign="space-around">
+  <span>No data matching selected filters. Please amend filters.</span>
+</div>
+
 <ng-container *ngIf="!!paginationConfig">
   <mat-paginator
     [length]="paginationConfig.totalNumberOfItems"
+    [pageIndex]="paginationConfig.currentPage"
     [pageSize]="paginationConfig.pageSize"
     (page)="onPageChange($event)"
   ></mat-paginator>

@@ -1,7 +1,12 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  OnInit,
+  Output,
+  Input
+} from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { PaymentTransactionsTableService } from '../../services/payment-transactions-table.service';
-import { Observable } from 'rxjs';
 import { OptionItem } from '../../../../shared/models/dropdown-select.models';
 import {
   PaymentTransactionTableFilters,
@@ -15,20 +20,18 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PaymentTransactionFiltersComponent implements OnInit {
+  @Input() statusOptions!: Array<OptionItem<TransactionStatus>>;
   @Output() filterChange: EventEmitter<PaymentTransactionTableFilters> = new EventEmitter<PaymentTransactionTableFilters>();
-
-  transactionStatusOptions$: Observable<Array<OptionItem<TransactionStatus>>> = this.tableService.transactionsStatusOptions$;
 
   filterForm: FormGroup = this.fb.group(
     {
-      dateRange: [{}],
-      status: [[]]
+      dateRange: [{startDate: '', endDate: ''}],
+      status: ['']
     }
   );
 
   constructor(
     private fb: FormBuilder,
-    private tableService: PaymentTransactionsTableService,
   ) {}
 
   ngOnInit() {

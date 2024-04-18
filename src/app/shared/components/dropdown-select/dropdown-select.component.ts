@@ -4,7 +4,9 @@ import {
   EventEmitter,
   forwardRef,
   Input,
-  Output
+  Output,
+  OnChanges,
+  SimpleChanges
 } from '@angular/core';
 import { OptionItem } from '../../models/dropdown-select.models';
 import { MatSelectChange } from '@angular/material/select';
@@ -23,16 +25,18 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
     },
   ]
 })
-export class DropdownSelectComponent<T> implements ControlValueAccessor {
-  @Input() optionsList: Array<OptionItem<T>>;
+export class DropdownSelectComponent<T> implements OnChanges, ControlValueAccessor {
+  @Input() optionsList!: Array<OptionItem<T | null>>;
   @Input() formControlName: string;
   @Input() label?: string = '';
   @Input() multiSelect?: boolean = false;
-  @Output() selectionChange: EventEmitter<Array<string>> = new EventEmitter<Array<string>>();
+  @Input() resetOption?: boolean = true;
+  @Output() selectionChangeMulti: EventEmitter<Array<string>> = new EventEmitter<Array<string>>();
+  @Output() selectionChangeSingle: EventEmitter<string> = new EventEmitter<string>();
 
   // This function will keep reference to a callback passed by `formControl`
   // which takes care of model changes
-  onChange: (value: Array<T>) => void;
+  onChange: (value: Array<T> | T) => void;
   onTouched: () => void;
 
   // Triggered every time it receives incoming value from a `formControl`.
@@ -43,7 +47,7 @@ export class DropdownSelectComponent<T> implements ControlValueAccessor {
 
   // Save the reference to the callback fn function passed by `formControl`.
   // We should trigger it every time when the model changes
-  registerOnChange(fn: (value: Array<T>) => void) {
+  registerOnChange(fn: (value: Array<T> | T) => void) {
     this.onChange = fn;
   }
 
@@ -51,8 +55,26 @@ export class DropdownSelectComponent<T> implements ControlValueAccessor {
     this.onTouched = fn;
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    //Add reset option for dropdown for single select
+    if(changes.hasOwnProperty('optionsList') && this.resetOption && !this.multiSelect) {
+      this.optionsList = [
+        {
+          label: '-',
+          value: null
+        },
+        ...this.optionsList
+      ]
+    }
+  }
+
   onSelectionChange(event: MatSelectChange) {
-    this.selectionChange.emit(event.value);
-    this.onChange(event.value)
+    if(Array.isArray(event.value)) {
+      this.selectionChangeMulti.emit(event.value);
+    } else {
+      this.selectionChangeSingle.emit(event.value);
+    }
+
+    this.onChange(event.value);
   }
 }

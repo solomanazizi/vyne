@@ -5,7 +5,6 @@ import {
   forwardRef,
   Output
 } from '@angular/core';
-import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { DateRange } from '../../models/datepicket.models';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
@@ -13,10 +12,10 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 const appDateFormat = {
   parse: {
-    dateInput: 'DD/MM/YYYY',
+    dateInput: 'YYYY-MM-DD',
   },
   display: {
-    dateInput: 'DD/MM/YYYY',
+    dateInput: 'YYYY-MM-DD',
     monthYearLabel: 'MMM YYYY',
     dateA11yLabel: 'LL',
     monthYearA11yLabel: 'MMMM YYYY',

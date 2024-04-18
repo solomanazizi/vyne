@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -8,9 +8,11 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import {
   BasicAuthenticationInterceptor
 } from './shared/interceptors/basic-authentication.interceptor';
-import { ToastrModule } from 'ngx-toastr';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
+import {
+  CustomErrorHandler
+} from './shared/services/custom-error-handler/custom-error-handler.service';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,6 @@ import { EffectsModule } from '@ngrx/effects';
     HttpClientModule,
     BrowserAnimationsModule,
     FlexLayoutModule,
-    ToastrModule,
     StoreModule.forRoot({}, {}),
     EffectsModule.forRoot([]),
   ],
@@ -32,6 +33,10 @@ import { EffectsModule } from '@ngrx/effects';
       useClass: BasicAuthenticationInterceptor,
       multi: true,
     },
+    {
+      provide: ErrorHandler,
+      useClass: CustomErrorHandler,
+    }
   ],
   bootstrap: [AppComponent]
 })

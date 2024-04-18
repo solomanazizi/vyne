@@ -8,6 +8,8 @@ import {
   PaymentTransactionTableFilters
 } from '../models/payment-transactions.models';
 import { TestScheduler } from 'rxjs/testing';
+import { PageEvent } from '@angular/material/paginator';
+import { actions } from '../store/payment-transactions.actions';
 
 const MOCK_PAYMENT_TRANSACTION_ITEMS: Array<PaymentTransaction> = [{
   'id': 'TXID_sdfb-sodj-3gb34-3r3brb',
@@ -76,7 +78,7 @@ describe('PaymentTransactionsTableService', () => {
         a: MOCK_PAYMENT_TRANSACTION_ITEMS,
       };
 
-      testScheduler.run(({ expectObservable }) => {
+      testScheduler.run(({expectObservable}) => {
         expectObservable(testObservable).toBe(
           expectedMarbles,
           expectedValues
@@ -86,24 +88,35 @@ describe('PaymentTransactionsTableService', () => {
   });
 
   describe('Public methods', () => {
-    it('should update date range filter', () => {
-      spyOn(service._tableFilters, 'next');
+    it('should send request on table page change', () => {
+      spyOn(store, 'dispatch');
       const mockFilters: PaymentTransactionTableFilters = {
-        dateRange: {startDate: '01/01/2024',
-        endDate: '31/12/2024'},
-        status: ['FAILED']
+        dateRange: {
+          startDate: '01-01-2020',
+          endDate: '01-01-2024'
+        },
+        status: 'CREATED'
       };
-      service.tableFilterChange(mockFilters);
+      const mockPageEvent: PageEvent = {
+        pageIndex: 1,
+        pageSize: 5,
+        length: 25
+      };
 
-      expect(service._tableFilters.next).toHaveBeenCalledWith(mockFilters);
-    })
-  });
+      service._tableFilters.next(mockFilters);
+      service.tablePageChange(mockPageEvent);
 
-  describe('Private methods', () => {
-    it('should filter array by status', () => {
-      const privateMethod = (service as any).filterByStatus;
-      expect(privateMethod(MOCK_PAYMENT_TRANSACTION_ITEMS, ['CREATED'])).toEqual([MOCK_PAYMENT_TRANSACTION_ITEMS[0]]);
-      expect(privateMethod(MOCK_PAYMENT_TRANSACTION_ITEMS, ['FAILED'])).toEqual([MOCK_PAYMENT_TRANSACTION_ITEMS[1]]);
+      expect(store.dispatch).toHaveBeenCalledWith(
+        actions.getPaymentTransactions({
+          requestPayload: {
+            createdAtEnd: mockFilters.dateRange.endDate,
+            createdAtStart: mockFilters.dateRange.startDate,
+            page: mockPageEvent.pageIndex,
+            size: mockPageEvent.pageSize,
+            status: mockFilters.status
+          }
+        })
+      );
     });
   });
 });
