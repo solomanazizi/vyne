@@ -5,7 +5,9 @@ describe('CustomErrorHandlerService', () => {
   let service: CustomErrorHandler;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [CustomErrorHandler]
+    });
     service = TestBed.inject(CustomErrorHandler);
   });
 
